@@ -1,3 +1,5 @@
+import { task } from "hardhat/config";
+
 require("dotenv").config();
 
 import '@typechain/hardhat'

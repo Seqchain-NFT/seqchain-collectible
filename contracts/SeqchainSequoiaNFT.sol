@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.0;
 
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
@@ -8,7 +10,7 @@ import { ERC721Enumerable, ERC721, Strings } from "@openzeppelin/contracts/token
  * @title SeqchainSequoiaNFT - General Seqchain NFT collection.
  * 1000
  */
-contract SeqchainSequoiaNFT is ERC721Enumerable {
+contract SeqchainSequoiaNFT is ERC721Enumerable, Ownable {
     using Strings for uint256;
 
     uint256 public tokenIdTracker;

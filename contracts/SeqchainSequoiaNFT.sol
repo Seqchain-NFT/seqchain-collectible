@@ -5,12 +5,13 @@ pragma solidity ^0.8.0;
 import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { ERC721Enumerable, ERC721, Strings } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "./interfaces/ISequoiaNFT.sol";
 
 /**
  * @title SeqchainSequoiaNFT - General Seqchain NFT collection.
  * 1000
  */
-contract SeqchainSequoiaNFT is ERC721Enumerable, Ownable {
+contract SeqchainSequoiaNFT is ISequoiaNFT, ERC721Enumerable, Ownable {
     using Strings for uint256;
 
     uint256 public tokenIdTracker;
@@ -26,16 +27,19 @@ contract SeqchainSequoiaNFT is ERC721Enumerable, Ownable {
     {}
 
     /**
-     * @dev Mint one NFT token to specific address `_to` with specific type id `_type`.
+     * @dev Mint NFTs token to specific address `_to`.
      *
      * Returns a boolean value indicating whether the operation succeeded.
      *
      * Emits a {Transfer} event.
      */
-    function mint(address _to) external virtual {
+    function mint(address _to, uint256 _amount) external override onlyOwner {
         uint256 tokenId = tokenIdTracker;
-        _mint(_to, tokenId);
-        tokenIdTracker++;
+        for (uint i; i < _amount; i++) {
+            _mint(_to, tokenId + i);
+        }
+
+        tokenIdTracker = tokenId + _amount;
     }
 
     /**

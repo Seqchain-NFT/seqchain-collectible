@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "./interfaces/ISequoiaNFT.sol";
-import "./Whitelist.sol";
+import "./access/Whitelist.sol";
 
 contract SequoiaMarket is Whitelist, ReentrancyGuard {
     enum SalesStatus {

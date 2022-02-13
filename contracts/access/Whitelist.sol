@@ -16,6 +16,22 @@ abstract contract Whitelist is Ownable {
         whitelistMerkleRoot = merkleRoot;
     }
 
+    function verify(
+        bytes32 root,
+        bytes32 leaf,
+        bytes32[] calldata proof
+    )
+        external
+        pure
+        returns (bool)
+    {
+        return MerkleProof.verify(
+            proof,
+            root,
+            leaf
+        );
+    }
+
     /**
      * @dev validates merkleProof
      */

@@ -16,11 +16,17 @@ contract SequoiaMarket is Whitelist, ReentrancyGuard {
     }
 
     SalesStatus public status;
-    uint256 public maxTokenPurchase = 3;
+    uint256 public maxTokenPurchase = 1;
 
     address public nft;
     address payable public fund;
     uint256 public price = 1e18;
+
+    event Purchase(address indexed buyer, uint256 indexed amount, uint256 paid);
+    event FundSet(address payable account);
+    event PriceSet(uint256 price);
+    event StatusSet(SalesStatus status);
+    event MaxTokenPurchaseSet(uint256 amount);
 
     constructor(
         address _nft,
@@ -75,14 +81,26 @@ contract SequoiaMarket is Whitelist, ReentrancyGuard {
         );
 
         fund = _newFund;
+        emit FundSet(_newFund);
     }
 
     function setPrice(uint256 _price) external onlyOwner {
+        require(_price != 0, "Incorrect price");
+
         price = _price;
+        emit PriceSet(_price);
     }
 
     function setStatus(SalesStatus _status) external onlyOwner {
         status = _status;
+        emit StatusSet(_status);
+    }
+
+    function setMaxTokenPurchase(uint256 _amount) external onlyOwner {
+        require(_amount != 0, "Incorrect amount");
+
+        maxTokenPurchase = _amount;
+        emit MaxTokenPurchaseSet(_amount);
     }
 
     function _buy(
@@ -96,6 +114,7 @@ contract SequoiaMarket is Whitelist, ReentrancyGuard {
 
         Address.sendValue(fund, _deposit);
         ISequoiaNFT(nft).mint(msg.sender, _amount);
+        emit Purchase(msg.sender, _amount, _deposit);
     }
 
     modifier isCorrectAmount(uint256 _amount) {

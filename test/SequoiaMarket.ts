@@ -11,7 +11,7 @@ chai.use(solidity);
 
 const { assert } = chai;
 
-describe("BoxMarket", function () {
+describe("SequoiaMarket", function () {
     let accounts: Signer[];
 
     let OWNER_SIGNER: any;
@@ -19,12 +19,14 @@ describe("BoxMarket", function () {
     let ALICE_SIGNER: any;
     let BOB_SIGNER: any;
     let DAVE_SIGNER: any;
+    let JANE_SIGNER: any;
 
     let OWNER: any;
     let DEV: any;
     let ALICE: any;
     let BOB: any;
     let DAVE: any;
+    let JANE: any;
 
     let nft: any;
     let market: any;
@@ -37,12 +39,14 @@ describe("BoxMarket", function () {
         ALICE_SIGNER = accounts[2];
         BOB_SIGNER = accounts[3];
         DAVE_SIGNER = accounts[4];
+        JANE_SIGNER = accounts[5];
 
         OWNER = await OWNER_SIGNER.getAddress();
         DEV = await DEV_SIGNER.getAddress();
         ALICE = await ALICE_SIGNER.getAddress();
         BOB = await BOB_SIGNER.getAddress();
         DAVE = await DAVE_SIGNER.getAddress();
+        JANE = await JANE_SIGNER.getAddress();
 
         const SeqchainSequoiaNFT = await ethers.getContractFactory("SeqchainSequoiaNFT");
         const SequoiaMarket = await ethers.getContractFactory("SequoiaMarket");
@@ -75,21 +79,22 @@ describe("BoxMarket", function () {
             await market.setStatus(1)
 
             let priceBoxId0 = 1;
+            let amount = 1
+            let deposit = amount * priceBoxId0
 
-            const wl = [ALICE, BOB]
+            const wl = [ALICE, BOB, DAVE, DEV, JANE]
             const leaves = wl.map(v => keccak256(v))
             const tree = new MerkleTree(leaves, keccak256, { sort: true })
             const root = tree.getHexRoot()
-            const leaf: any = keccak256(ALICE)
-            const proof = tree.getHexProof(leaf)
 
             await market.setWhitelistMerkleRoot(root)
 
-            const verified = await market.verify(root, leaf, proof)
-            assert.equal(verified, true, 'On contract')
+            // ALICE
+            let leaf: any = keccak256(ALICE)
+            let proof: Array<string> = tree.getHexProof(leaf)
 
-            let amount = 1
-            let deposit = amount * priceBoxId0
+            let verified = await market.verify(root, leaf, proof)
+            assert.equal(verified, true, 'ALICE')
 
             await market.connect(ALICE_SIGNER).mintPresale(
                 amount,
@@ -105,6 +110,19 @@ describe("BoxMarket", function () {
                     { value: deposit }
                 )
             ).revertedWith('NFT is already claimed by this wallet')
+
+            // BOB
+            leaf = keccak256(BOB)
+            proof = tree.getHexProof(leaf)
+
+            verified = await market.verify(root, leaf, proof)
+            assert.equal(verified, true, 'BOB')
+
+            await market.connect(BOB_SIGNER).mintPresale(
+                amount,
+                proof,
+                { value: deposit }
+            )
         })
     })
 

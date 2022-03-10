@@ -48,10 +48,10 @@ describe("SequoiaMarket", function () {
         DAVE = await DAVE_SIGNER.getAddress();
         JANE = await JANE_SIGNER.getAddress();
 
-        const SeqchainSequoiaNFT = await ethers.getContractFactory("SeqchainSequoiaNFT");
+        const SeqchainAlphaGeneration = await ethers.getContractFactory("SeqchainAlphaGeneration");
         const SequoiaMarket = await ethers.getContractFactory("SequoiaMarket");
 
-        nft = await SeqchainSequoiaNFT.deploy();
+        nft = await SeqchainAlphaGeneration.deploy();
         await nft.deployed()
 
         market = await SequoiaMarket.deploy(nft.address, DEV);

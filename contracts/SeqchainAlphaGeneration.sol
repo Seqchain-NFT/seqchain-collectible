@@ -9,10 +9,10 @@ import "./access/OperatorAccess.sol";
 import "./libs/BokkyPooBahsDateTimeLibrary.sol";
 
 /**
- * @title SeqchainSequoiaNFT - General Seqchain NFT collection.
+ * @title SeqchainAlphaGeneration - General Seqchain NFT collection.
  * 1000
  */
-contract SeqchainSequoiaNFT is ISequoiaNFT, ERC721Enumerable, OperatorAccess {
+contract SeqchainAlphaGeneration is ISequoiaNFT, ERC721Enumerable, OperatorAccess {
     using Strings for uint256;
 
     uint256 public initDate;
@@ -25,7 +25,7 @@ contract SeqchainSequoiaNFT is ISequoiaNFT, ERC721Enumerable, OperatorAccess {
      * See {ERC721-constructor}.
      */
     constructor()
-        ERC721("Seqchain Sequoia NFT", "SEQNFT")
+        ERC721("Seqchain Alpha Generation", "SEQNFT")
     {
         initDate = block.timestamp;
     }

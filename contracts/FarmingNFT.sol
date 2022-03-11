@@ -85,7 +85,7 @@ contract FarmingNFT is ERC721Holder, Ownable {
         }
     }
 
-    function earnMilkBatch(uint256[] calldata _tokenIDs) external {
+    function earnBatch(uint256[] calldata _tokenIDs) external {
         require(
             !UintArrayUtils.hasDuplicate(_tokenIDs),
             "Duplicates in token list"

@@ -57,7 +57,7 @@ contract FarmingNFT is ERC721Holder, Ownable {
         uint256 i;
         for (i; i < len; i++) {
             require(
-                nft.ownerOf(_tokenIDs[i]) != msg.sender,
+                nft.ownerOf(_tokenIDs[i]) == msg.sender,
                 "Ownership not approved"
             );
         }

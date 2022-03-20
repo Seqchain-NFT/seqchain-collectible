@@ -64,10 +64,10 @@ contract FarmingNFT is ERC721Holder, Ownable {
 
         i = 0;
         for (i; i < len; i++) {
-            if (lastReward[_tokenIDs[i]] == 0) {
-                lastReward[_tokenIDs[i]] = block.number;
-                emit FarmingActivated(_tokenIDs[i]);
-            }
+            require(lastReward[_tokenIDs[i]] == 0, "Farming enabled for one of the token");
+
+            lastReward[_tokenIDs[i]] = block.number;
+            emit FarmingActivated(_tokenIDs[i]);
         }
     }
 

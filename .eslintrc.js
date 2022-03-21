@@ -23,7 +23,7 @@ module.exports = {
       rules: { "no-process-exit": "off" },
     },
     {
-      files: ["hardhat.config.js", "scripts/**", "test/**"],
+      files: ["hardhat.config.ts", "scripts/**", "test/**"],
       rules: { "node/no-unpublished-require": "off" },
     },
   ],
